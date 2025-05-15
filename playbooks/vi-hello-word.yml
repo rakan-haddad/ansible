@@ -1,0 +1,12 @@
+---
+- name: Ensure "hello world!" exists in /root/semaphore.text
+  hosts: lab  # Uses the 'lab' inventory
+  become: yes  # Runs as root (since /root/ requires privileges)
+
+  tasks:
+    - name: Create/update the file with "hello world!"
+      ansible.builtin.lineinfile:
+        path: /root/semaphore.text
+        line: "hello world!"
+        create: yes  # Creates the file if it doesn't exist
+        mode: '0644'  # Sets file permissions (optional)
