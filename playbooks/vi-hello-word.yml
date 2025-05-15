@@ -1,5 +1,5 @@
 ---
-- name: Ensure "hello world!" exists in /root/semaphore.text
+- name: Ensure "hello world!" exists in /root/semaphore.txt
   hosts: all
   become: true
 
