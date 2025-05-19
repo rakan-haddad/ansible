@@ -7,7 +7,7 @@
     mq_group: mqm
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
     mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
-    mq_tarball: "9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
+    mq_tarball: "/root/9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
 
   tasks:
     - name: Ensure group mqm exists
@@ -29,18 +29,12 @@
         state: directory
         mode: '0755'
 
-    - name: Copy IBM MQ tarball to remote host
-      copy:
-        src: "/root/{{ mq_tarball }}"
-        dest: "{{ mq_dir }}/"
-        mode: '0644'
-
-    - name: Extract MQ tarball
+    - name: Extract MQ tarball from /root/ to installation directory
       ansible.builtin.unarchive:
-        src: "{{ mq_dir }}/{{ mq_tarball }}"
+        src: "{{ mq_tarball }}"
         dest: "{{ mq_dir }}"
         remote_src: yes
-
+        
     - name: Change to MQServer directory and accept license
       ansible.builtin.shell: |
         cd {{ mq_dir }}/MQServer
