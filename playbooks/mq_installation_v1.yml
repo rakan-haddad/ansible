@@ -7,7 +7,7 @@
     mq_group: mqm
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
     mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
-    mq_tarball: "IBM.MQ.{{ mq_date }}.tar.gz"
+    mq_tarball: "9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
 
   tasks:
     - name: Ensure group mqm exists
@@ -31,7 +31,7 @@
 
     - name: Copy IBM MQ tarball to remote host
       copy:
-        src: "files/{{ mq_tarball }}"
+        src: "/root/{{ mq_tarball }}"
         dest: "{{ mq_dir }}/"
         mode: '0644'
 
