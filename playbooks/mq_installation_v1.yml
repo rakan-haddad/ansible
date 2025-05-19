@@ -93,8 +93,8 @@
     - name: Start MQ Web Console as mqm with debug info
       become: true
       become_user: mqm
+      become_flags: '-i'
       shell: |
-        . /opt/mqm/bin/setmqenv -s
         strmqweb
       args:
         executable: /bin/bash
