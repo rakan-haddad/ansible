@@ -1,12 +1,12 @@
 ---
 - name: Install IBM MQ Server from local tarball
-  hosts: mq_server
+  hosts: mq_hosts
   become: true
   vars:
     mq_user: mqm
     mq_group: mqm
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
-    mq_dir: "/opt/IBM_MQ_{{ mq_date }}"
+    mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
     mq_tarball: "IBM.MQ.{{ mq_date }}.tar.gz"
 
   tasks:
