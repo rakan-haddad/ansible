@@ -1,0 +1,68 @@
+---
+- name: Install IBM MQ Server from local tarball
+  hosts: mq_server
+  become: true
+  vars:
+    mq_user: mqm
+    mq_group: mqm
+    mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
+    mq_dir: "/opt/IBM_MQ_{{ mq_date }}"
+    mq_tarball: "IBM.MQ.{{ mq_date }}.tar.gz"
+
+  tasks:
+    - name: Ensure group mqm exists
+      group:
+        name: "{{ mq_group }}"
+        state: present
+
+    - name: Ensure user mqm exists with primary group mqm
+      user:
+        name: "{{ mq_user }}"
+        group: "{{ mq_group }}"
+        state: present
+        shell: /bin/bash
+
+    - name: Create installation directory with date
+      file:
+        path: "{{ mq_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy IBM MQ tarball to remote host
+      copy:
+        src: "files/{{ mq_tarball }}"
+        dest: "{{ mq_dir }}/"
+        mode: '0644'
+
+    - name: Extract MQ tarball
+      ansible.builtin.unarchive:
+        src: "{{ mq_dir }}/{{ mq_tarball }}"
+        dest: "{{ mq_dir }}"
+        remote_src: yes
+
+    - name: Change to MQServer directory and accept license
+      ansible.builtin.shell: |
+        cd {{ mq_dir }}/MQServer
+        ./mqlicense.sh -text_only <<EOF
+        1
+        EOF
+      args:
+        executable: /bin/bash
+
+    - name: Install IBM MQ RPMs
+      ansible.builtin.shell: |
+        cd {{ mq_dir }}/MQServer
+        rpm -Uvh MQSeries*.rpm
+      args:
+        executable: /bin/bash
+
+    - name: Set MQ installation environment
+      ansible.builtin.shell: /opt/mqm/bin/setmqinst -i -p /opt/mqm/
+
+    - name: Validate IBM MQ installation
+      ansible.builtin.command: /opt/mqm/bin/dspmqver
+      register: mq_version
+
+    - name: Show MQ version
+      ansible.builtin.debug:
+        var: mq_version.stdout
