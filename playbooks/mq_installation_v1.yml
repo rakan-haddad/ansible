@@ -96,6 +96,7 @@
       become_flags: '-i'
       shell: |
         strmqweb
+        sleep 10
       args:
         executable: /bin/bash
       register: strmqweb_output
