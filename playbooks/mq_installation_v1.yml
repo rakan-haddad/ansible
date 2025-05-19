@@ -97,6 +97,6 @@
       ignore_errors: true
     
     - name: Start MQ Web Console
-      ansible.builtin.command: /opt/mqm/bin/strmqweb
+      command: /opt/mqm/bin/strmqweb
       become: true
       become_user: mqm
