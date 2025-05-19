@@ -8,6 +8,7 @@
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
     mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
     mq_tarball: "/root/9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
+    mq_server_host: "logstash-srv-01"
 
   tasks:
     - name: Ensure group mqm exists
@@ -61,7 +62,7 @@
     - name: Show MQ version
       ansible.builtin.debug:
         var: mq_version.stdout
-
+		
     - name: Change basic auth of MQ Web
       block:
         - name: Remove existing mqwebuser.xml
@@ -77,9 +78,7 @@
         mode: '0644'
     
     - name: Rename basic_registry.xml to mqwebuser.xml
-      command: >
-        mv /var/mqm/web/installations/Installation1/servers/mqweb/basic_registry.xml
-           /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml
+      ansible.builtin.command: mv /var/mqm/web/installations/Installation1/servers/mqweb/basic_registry.xml /var/mqm/web/installations/Installation1/servers/mqweb/mqwebuser.xml
 		   
     - name: Change httpHost variable in mqweb.xml
       replace:
