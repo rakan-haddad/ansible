@@ -36,22 +36,25 @@
         dest: "{{ mq_dir }}"
         remote_src: yes
 
-
     - name: Accept MQ license
       ansible.builtin.shell: |
         cd {{ mq_dir }}/MQServer
         echo "1" | ./mqlicense.sh -text_only
-
-
       args:
         executable: /bin/bash
 
-    - name: Install IBM MQ RPMs
+    - name: Check if MQ is already installed
+      ansible.builtin.command: /opt/mqm/bin/dspmqver
+      register: mq_installed
+      ignore_errors: true
+  
+    - name: Install IBM MQ RPMs (if not installed)
       ansible.builtin.shell: |
         cd {{ mq_dir }}/MQServer
         rpm -Uvh MQSeries*.rpm
       args:
         executable: /bin/bash
+      when: mq_installed.rc != 0
 
     - name: Set MQ installation environment
       ansible.builtin.command: /opt/mqm/bin/setmqinst -i -p /opt/mqm/
