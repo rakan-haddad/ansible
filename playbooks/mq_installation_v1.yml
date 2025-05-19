@@ -89,18 +89,12 @@
         path: /opt/mqm/web/mq/etc/mqweb.xml
         regexp: '<variable name="httpHost" value=".*?"/>'
         replace: '<variable name="httpHost" value="{{ mq_server_host }}"/>'
-
-    - name: Stop MQ Web Console (ignore errors if not running)
-      become: true
-      become_user: mqm
-      ignore_errors: true
-      ansible.builtin.command: /opt/mqm/bin/endmqweb
     
     - name: Start MQ Web Console as mqm
       become: true
       become_user: mqm
-      shell: |
-        . /opt/mqm/bin/setmqenv -s
+      ansible.builtin.shell: |
+        su mqm
         strmqweb
       args:
         executable: /bin/bash
