@@ -6,7 +6,7 @@
     mq_user: mqm
     mq_group: mqm
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
-    mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
+    mq_dir: "/tmp/"
     mq_tarball: "/root/9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
 
   tasks:
