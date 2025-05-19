@@ -99,4 +99,8 @@
     - name: Start MQ Web Console as mqm
       become: true
       become_user: mqm
-      ansible.builtin.shell: strmqweb
+      shell: |
+        . /opt/mqm/bin/setmqenv -s
+        strmqweb
+      args:
+        executable: /bin/bash
