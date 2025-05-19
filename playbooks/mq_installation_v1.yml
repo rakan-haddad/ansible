@@ -90,11 +90,25 @@
         regexp: '<variable name="httpHost" value=".*?"/>'
         replace: '<variable name="httpHost" value="{{ mq_server_host }}"/>'
     
-    - name: Start MQ Web Console as mqm
+    - name: Start MQ Web Console as mqm with debug info
       become: true
       become_user: mqm
-      ansible.builtin.shell: |
-        su mqm
+      shell: |
+        . /opt/mqm/bin/setmqenv -s
         strmqweb
       args:
         executable: /bin/bash
+      register: strmqweb_output
+      ignore_errors: true
+    
+    - name: Debug strmqweb stdout
+      debug:
+        var: strmqweb_output.stdout
+    
+    - name: Debug strmqweb stderr
+      debug:
+        var: strmqweb_output.stderr
+    
+    - name: Debug strmqweb rc
+      debug:
+        var: strmqweb_output.rc
