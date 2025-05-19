@@ -95,7 +95,7 @@
       become_user: mqm
       become_flags: '-i'
       shell: |
-        strmqweb
+        nohup strmqweb > /tmp/strmqweb.log 2>&1 &
         sleep 10
       args:
         executable: /bin/bash
