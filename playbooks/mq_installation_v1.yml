@@ -91,12 +91,12 @@
         replace: '<variable name="httpHost" value="{{ mq_server_host }}"/>'
 
     - name: Stop MQ Web Console (ignore errors if not running)
-      ansible.builtin.command: /opt/mqm/bin/endmqweb
       become: true
       become_user: mqm
       ignore_errors: true
+      ansible.builtin.command: /opt/mqm/bin/endmqweb
     
-    - name: Start MQ Web Console
-      command: /opt/mqm/bin/strmqweb
+    - name: Start MQ Web Console as mqm
       become: true
       become_user: mqm
+      ansible.builtin.shell: strmqweb
