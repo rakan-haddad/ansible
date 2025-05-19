@@ -91,4 +91,4 @@
         replace: '<variable name="httpHost" value="{{ mq_server_host }}"/>'
 
     - name: Start IBM MQ Web server
-      ansible.builtin.command: /opt/mqm/web/bin/strmqweb
+      ansible.builtin.command: strmqweb
