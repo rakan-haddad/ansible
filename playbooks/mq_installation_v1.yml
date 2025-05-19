@@ -90,7 +90,13 @@
         regexp: '<variable name="httpHost" value=".*?"/>'
         replace: '<variable name="httpHost" value="{{ mq_server_host }}"/>'
 
-    - name: Start IBM MQ Web server
-      ansible.builtin.command: /opt/mqm/bin/strmqweb
+    - name: Stop MQ Web Console (ignore errors if not running)
+      ansible.builtin.command: /opt/mqm/web/bin/endmqweb
+      become: true
+      become_user: mqm
+      ignore_errors: true
+    
+    - name: Start MQ Web Console
+      ansible.builtin.command: /opt/mqm/web/bin/strmqweb
       become: true
       become_user: mqm
