@@ -15,12 +15,13 @@
         name: "{{ mq_group }}"
         state: present
 
-    - name: Ensure user mqm exists with primary group mqm
+    - name: Ensure user mqm exists with primary group mqm and set password
       user:
         name: "{{ mq_user }}"
         group: "{{ mq_group }}"
-        state: present
+        password: "$6$BZiAqV9wphmNhi5W$u5U055nrQ7XLdSpbgSNaUgzNMyasx2QiWttmaHDLJ1aDcEX53GSO46ZN0APtmp72xNGhDa.sAWJenTmD9ki/t/"
         shell: /bin/bash
+        state: present
 
     - name: Create installation directory with date
       file:
