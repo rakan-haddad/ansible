@@ -8,7 +8,7 @@
     mq_date: "{{ lookup('pipe', 'date +%Y-%m-%d') }}"
     mq_dir: "/home/mqm/IBM_MQ_{{ mq_date }}"
     mq_tarball: "/root/9.4.0.0-IBM-MQ-LinuxX64.tar.gz"
-    mq_server_host: "logstash-srv-01"
+    mq_server_host: "kibana-srv-01"
 
   tasks:
     - name: Ensure group mqm exists
